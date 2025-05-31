@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MARKETMAIL — Регистрация</title>
+    <title>MARKETMAIL — Вход</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,11 +16,6 @@
             background-color: #fff;
             text-align: center;
             padding: 20px 0;
-        }
-        header img {
-            width: 60%; /* Это сделает логотип пропорциональным */
-            max-width: 300px; /* Ограничиваем максимальный размер */
-            height: auto;
         }
         form {
             margin: 20px;
@@ -38,30 +33,38 @@
             text-align: center;
             padding: 10px 0;
         }
+        .toggle-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        .toggle-button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
     <header>
-        <!-- Логотип с ограничением по размеру -->
-        <img src="logo.png" alt="MARKETMAIL">
-        <h1>Регистрация на MARKETMAIL</h1>
+        <h1>Вход на MARKETMAIL</h1>
     </header>
 
-    <!-- Регистрация -->
-    <section id="registration">
-        <h2>Заполните форму для регистрации</h2>
-        <form id="registerForm">
-            <label for="username">Имя пользователя:</label>
-            <input type="text" id="username" required>
+    <!-- Вход -->
+    <section id="login">
+        <h2>Введите данные для входа</h2>
+        <form id="loginForm">
+            <label for="loginUsername">Имя пользователя:</label>
+            <input type="text" id="loginUsername" required>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" required>
+            <label for="loginPassword">Пароль:</label>
+            <input type="password" id="loginPassword" required>
 
-            <label for="password">Пароль (минимум 8 символов):</label>
-            <input type="password" id="password" required>
-
-            <button type="submit">Зарегистрироваться</button>
+            <button type="submit">Войти</button>
         </form>
+        <button class="toggle-button" onclick="showRegistrationForm()">Еще не зарегистрированы? Зарегистрироваться</button>
     </section>
 
     <footer>
@@ -69,34 +72,29 @@
     </footer>
 
     <script>
-        // Функция проверки пароля
-        function isValidPassword(password) {
-            return /^[a-zA-Z0-9]{8,}$/.test(password); // Только буквы и цифры, минимум 8 символов
-        }
-
-        // Обработка регистрации
-        document.getElementById('registerForm').addEventListener('submit', function(event) {
+        // Обработка входа
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
             
-            var username = document.getElementById('username').value;
-            var email = document.getElementById('email').value;
-            var password = document.getElementById('password').value;
+            var loginUsername = document.getElementById('loginUsername').value;
+            var loginPassword = document.getElementById('loginPassword').value;
 
-            // Проверка на валидность пароля
-            if (!isValidPassword(password)) {
-                alert('Пароль должен содержать минимум 8 символов (цифры и буквы латиницей).');
-                return;
+            // Получаем данные из localStorage
+            var storedUsername = localStorage.getItem('username');
+            var storedPassword = localStorage.getItem('password');
+
+            // Проверка на совпадение имени и пароля
+            if (loginUsername === storedUsername && loginPassword === storedPassword) {
+                window.location.href = '/account.html'; // Перенаправление в личный кабинет
+            } else {
+                alert('Неверное имя пользователя или пароль.');
             }
-
-            // Сохраняем данные пользователя
-            localStorage.setItem('username', username);
-            localStorage.setItem('email', email);
-            localStorage.setItem('password', password);
-            localStorage.setItem('registrationDate', new Date().toLocaleString());
-
-            // Переключаем на личный кабинет
-            window.location.href = '/account.html'; // Переход к личному кабинету
         });
+
+        // Показать форму регистрации
+        function showRegistrationForm() {
+            window.location.href = '/register.html'; // Перенаправление на страницу регистрации
+        }
     </script>
 </body>
 </html>
