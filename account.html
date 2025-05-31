@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARKETMAIL — Личный кабинет</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            color: #000;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
+        section {
+            margin: 20px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+        }
+        footer {
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Личный кабинет</h1>
+    </header>
+
+    <!-- Личный кабинет -->
+    <section>
+        <h2>Здравствуйте, <span id="usernameDisplay"></span></h2>
+        <p>Email: <span id="emailDisplay"></span></p>
+        <p>Дата регистрации: <span id="registrationDate"></span></p>
+        <button onclick="editProfile()">Редактировать профиль</button>
+        <button onclick="logout()">Выйти</button>
+    </section>
+
+    <!-- Форма редактирования профиля -->
+    <section id="editProfile" style="display:none;">
+        <h2>Редактирование профиля</h2>
+        <form id="editForm">
+            <label for="editUsername">Имя пользователя:</label>
+            <input type="text" id="editUsername">
+
+            <label for="editEmail">Email:</label>
+            <input type="email" id="editEmail">
+
+            <label for="editPassword">Новый пароль (если нужно):</label>
+            <input type="password" id="editPassword">
+
+            <button type="submit">Сохранить изменения</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 MARKETMAIL. Все права защищены.</p>
+    </footer>
+
+    <script>
+        // Загрузка данных пользователя из localStorage
+        document.getElementById('usernameDisplay').textContent = localStorage.getItem('username');
+        document.getElementById('emailDisplay').textContent = localStorage.getItem('email');
+        document.getElementById('registrationDate').textContent = localStorage.getItem('registrationDate');
+
+        // Редактирование профиля
+        function editProfile() {
+            document.getElementById('editProfile').style.display = 'block';
+            document.getElementById('editUsername').value = localStorage.getItem('username');
+            document.getElementById('editEmail').value = localStorage.getItem('email');
+        }
+
+        // Сохранение изменений
+        document.getElementById('editForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var newUsername = document.getElementById('editUsername').value;
+            var newEmail = document.getElementById('editEmail').value;
+            var newPassword = document.getElementById('editPassword').value;
+
+            localStorage.setItem('username', newUsername);
+            localStorage.setItem('email', newEmail);
+            if (newPassword) {
+                localStorage.setItem('password', newPassword);
+            }
+
+            // Обновляем данные на странице
+            document.getElementById('usernameDisplay').textContent = newUsername;
+            document.getElementById('emailDisplay').textContent = newEmail;
+
+            // Скрыть форму редактирования
+            document.getElementById('editProfile').style.display = 'none';
+        });
+
+        // Выйти из учетной записи
+        function logout() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('email');
+            localStorage.removeItem('password');
+            localStorage.removeItem('registrationDate');
+            window.location.href = '/'; // Перенаправляем на страницу регистрации
+        }
+    </script>
+</body>
+</html>
